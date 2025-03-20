@@ -77,3 +77,4 @@ python flight_scraper.py
 - Prices are in Turkish Lira (TL) as the script uses Kayak's Turkish site
 - Designed for student tickets (can be modified in the URL)
 - Requires stable internet connection for web scraping
+- Can NOT resolve CAPTCHA frames, do NOT send too many requests
