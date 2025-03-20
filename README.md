@@ -18,11 +18,29 @@ A Python tool that finds the cheapest flight combinations from Kayak by searchin
 ## Installation
 
 1. Clone this repository
-2. Install dependencies:
+2. Install dependencies using one of these methods:
+   
+   **Option 1: Using requirements.txt (recommended)**
+   ```
+   pip install -r requirements.txt
+   ```
+   
+   **Option 2: Manual installation**
    ```
    pip install pandas selenium
    ```
 3. Make sure you have the `airports.csv` file in the same directory as the script
+
+## Requirements.txt
+
+The project includes a `requirements.txt` file with all necessary dependencies:
+
+```
+pandas==2.0.0
+selenium==4.10.0
+```
+
+You can update these versions as needed or install specific versions for compatibility.
 
 ## Usage
 
