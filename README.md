@@ -9,12 +9,6 @@ A Python tool that finds the cheapest flight combinations from Kayak by searchin
 - Finds direct flights (no layovers) for the most convenient travel
 - Returns comprehensive pricing information for all possible combinations
 
-## Requirements
-
-- Python 3.6+
-- Chrome browser
-- ChromeDriver (compatible with your Chrome version)
-
 ## Installation
 
 1. Clone this repository
@@ -30,6 +24,7 @@ A Python tool that finds the cheapest flight combinations from Kayak by searchin
    pip install pandas selenium
    ```
 3. Make sure you have the `airports.csv` file in the same directory as the script
+4. Install ChromeDriver (compatible with your Chrome version)
 
 ## Requirements.txt
 
