@@ -7,6 +7,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
 
 def haversine(lon1, lat1, lon2, lat2):
     """
@@ -76,24 +77,17 @@ class FlightScraper:
         self.options = chrome_options
 
     def scrape_cheapest_flight_price(self, from_: str, to_: str, departure_date: str) -> int:
-        """Internal method to scrape price (runs in thread pool)"""
         driver = webdriver.Chrome(options=self.options)
         try:
             url = f"https://www.kayak.com.tr/flights/{from_}-{to_}/{departure_date}/1students?&sort=price_a&fs=stops=~0"
             driver.get(url)
-            
+        
             # Wait for cookie button to be present and click it
             cookie_button = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'RxNS-button-content') and text()='Tümünü reddet']"))
             )
             cookie_button.click()
-            
-            # Wait 2 seconds after clicking the cookie button
-            time.sleep(2)
-            
-            # Original wait of 3 seconds
-            time.sleep(3)
-            
+
             # Wait for the first valid result item to be present (excluding ones with JW4C class)
             result_container = WebDriverWait(driver, 10).until(
                 EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'Fxw9-result-item-container') and not(.//div[contains(@class, 'JW4C')])]"))
@@ -119,15 +113,14 @@ class FlightScraper:
             driver.quit()
 
     def get_flights(self, departure_dates: List[str], near_departure_start_airports: List[str], near_departure_end_airports: List[str]) -> List[Tuple[str, str, str, int]]:
-        """Get flights asynchronously for multiple routes and dates."""
         flights = []
-        # Create tasks for all combinations
         for departure_date in departure_dates:
             for departure_start_airport in near_departure_start_airports:
                 for departure_end_airport in near_departure_end_airports:
                     if departure_start_airport != departure_end_airport:
                         price = self.scrape_cheapest_flight_price(departure_start_airport, departure_end_airport, departure_date)
                         if price is not None:
+                            print(f"Departure: {departure_start_airport} to {departure_end_airport} on {departure_date} costs {price} TL.")
                             flights.append((departure_start_airport, departure_end_airport, departure_date, price))
         
         return flights
